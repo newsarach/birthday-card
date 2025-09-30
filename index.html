@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday 🎉</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="confetti-container" id="confetti"></div>
+
+    <div id="envelope-wrapper">
+        <div class="envelope" onclick="toggleEnvelope(event)">
+            <div class="flap"></div>
+            <div class="body"></div>
+            <div class="open-button" onclick="toggleEnvelope(event)">
+                <span>🎁</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Happy Birthday 🎂</h2>
+            <p>แก่ขึ้นอีกปีแล้ว ขอให้มีแต่รอยตรีนกา... เอ้ยรอยยิ้มตลอดไปเลยน๊าา</p>
+            
+            <a href="https://www.truemoney.com/a/tag/%E0%B8%97%E0%B8%A3%E0%B8%B9%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%88%E0%B8%A7%E0%B8%AD%E0%B8%A5%E0%B9%80%E0%B8%A5%E0%B9%87%E0%B8%97/" target="_blank" class="true-money-link">
+                Give You
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // FINAL FIX: แก้ไข Syntax Error โดยการใช้ const เพื่อประกาศตัวแปร
+        const confettiAmount = 5; // สร้างอนุภาค 15 ชิ้นต่อการเรียก 1 ครั้ง
+
+        // ฟังก์ชันสลับสถานะเปิด/ปิดซองจดหมาย
+        function toggleEnvelope(event) {
+            const envelopeWrapper = document.getElementById('envelope-wrapper');
+            const openButton = document.querySelector('.open-button');
+            
+            // ป้องกันการ Propagation: ถ้าคลิกที่ปุ่มวงกลม ให้ป้องกันไม่ให้คลิกไปถึงซองจดหมาย
+            if (event) {
+                event.stopPropagation();
+            }
+
+            // สลับ Class 'open' เพื่อสลับสถานะเปิด/ปิด
+            envelopeWrapper.classList.toggle('open');
+            
+            // สลับการแสดงปุ่มเปิด
+            if (envelopeWrapper.classList.contains('open')) {
+                openButton.style.display = 'none'; // ซ่อนปุ่มเมื่อซองเปิด
+            } else {
+                openButton.style.display = 'block'; // ให้ปุ่มกลับมาเมื่อซองปิด
+            }
+        }
+
+        // ฟังก์ชันสร้างพลุ (Confetti) 
+        function createConfetti() {
+            const container = document.getElementById('confetti');
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#2196f3', '#00bcd4', '#009688', '#ffeb3b', '#ff9800', '#ff5722'];
+            for (let i = 0; i < confettiAmount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('confetti-particle');
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + 'vw'; 
+                particle.style.animationDelay = Math.random() * 2 + 's'; 
+                particle.style.transform = `scale(${Math.random() * 1 + 0.5})`; 
+                container.appendChild(particle);
+            }
+        }
+        
+        // FINAL FIX: ฟังก์ชันวนลูปสร้างพลุ (สร้างใหม่ทุก 0.5 วินาที เพื่อให้ต่อเนื่อง)
+        function startConfettiLoop() {
+            // เรียก createConfetti() ทุก 500 มิลลิวินาที (0.5 วินาที)
+            setInterval(createConfetti, 2500);
+        }
+
+
+        // **ฟังก์ชันหลักที่ทำงานทันทีที่เปิดเว็บ**
+        window.onload = function() {
+            // 1. สั่งให้พลุทำงานตลอดเวลาทันที
+            startConfettiLoop();
+
+            // 2. หน่วงเวลา 2.5 วินาที แล้วค่อยให้ซองจดหมายบินเข้ามา
+            setTimeout(() => {
+                const envelopeWrapper = document.getElementById('envelope-wrapper');
+                
+                // ใช้ Class เพื่อเริ่มแอนิเมชัน "บินเข้ามา"
+                envelopeWrapper.classList.add('fly-in'); 
+
+            }, 2500); // 2500 มิลลิวินาที = 2.5 วินาที
+        }
+    </script>
+</body>
+</html>
